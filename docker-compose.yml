@@ -12,9 +12,3 @@ services:
       - POSTGRES_DATABASE=lesson
     command: postgres
     restart: always
-
-  redis:
-    image: redis:alpine3.14
-    container_name: redis-lesson
-    ports:
-      - "6379:6379"

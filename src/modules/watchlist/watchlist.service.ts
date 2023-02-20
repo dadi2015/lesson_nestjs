@@ -21,6 +21,14 @@ export class WatchlistService {
     }
   }
 
+  async getUserAssets (userId: number): Promise<Watchlist[]> {
+    try {
+      return this.watchlistRepository.findAll({where: {user: userId}})
+    }catch (e) {
+      throw new Error(e)
+    }
+  }
+
   async deleteAsset (userId: number, assetId: string): Promise<boolean> {
     try {
       await this.watchlistRepository.destroy({where: {id: assetId, user: userId}})
