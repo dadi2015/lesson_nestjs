@@ -5,7 +5,6 @@ import { AppError } from "../../common/constants/errors";
 import { UserLoginDTO } from "./dto";
 import { AuthUserResponse } from "./response";
 import * as bcrypt from 'bcrypt'
-import { TokenService } from "../token/token.service";
 
 @Injectable()
 export class AuthService {
@@ -24,12 +23,12 @@ export class AuthService {
     }
   }
 
-  async loginUser (dto: UserLoginDTO): Promise<AuthUserResponse> {
+  async loginUser (dto: UserLoginDTO): Promise<AuthUserResponse | BadRequestException> {
     try {
       const existUser = await this.userService.findUserByEmail(dto.email)
-      if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST)
+      if (!existUser) return new BadRequestException(AppError.USER_NOT_EXIST)
       const validatePassword = await bcrypt.compare(dto.password, existUser.password)
-      if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA)
+      if (!validatePassword) return new BadRequestException(AppError.WRONG_DATA)
       return this.userService.publicUser(dto.email)
     }catch (e) {
       throw new Error(e)
