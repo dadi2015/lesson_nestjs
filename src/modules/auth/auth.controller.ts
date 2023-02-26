@@ -3,7 +3,7 @@ import { AuthService } from "./auth.service";
 import { CreateUserDTO } from "../users/dto";
 import { UserLoginDTO } from "./dto";
 import { AuthUserResponse } from "./response";
-import { ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBadRequestResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UsersService } from "../users/users.service";
 import { JwtAuthGuard } from "../../guards/jwt-guard";
 
@@ -24,7 +24,6 @@ export class AuthController {
   }
 
   @ApiTags('API')
-  @ApiResponse({status: 200, type: AuthUserResponse})
   @Post("login")
   login(@Body() dto: UserLoginDTO): Promise<AuthUserResponse | BadRequestException> {
     return this.authService.loginUser(dto);
